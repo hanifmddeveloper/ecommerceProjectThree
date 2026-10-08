@@ -109,19 +109,38 @@ let getAllCategoryWiseSubCategory = async (req,res)=>{
   })
 } 
 // getAllOwnerWiseCategory 
-let getAllOwnerWiseCategory = async(req,res)=>{
-  // promise start
-  let { id } = req.params
-  let data = await Category.find({owner: id}).lean()
+// let getAllOwnerWiseCategory = async(req,res)=>{
+//   // promise start
+//   let { id } = req.params
+//   let data = await Category.find({owner: id}).lean()
  
-  mypromise(data).then((value) => {
-    res.status(200).json({
-      success: true,
-      message: "All Category",
-      data: value
+//   mypromise(data).then((value) => {
+//       res.status(200).json({
+//       success: true,
+//       message: "All Category",
+//       data: value
+//     });
+//   });
+// } 
+
+let getAllOwnerWiseCategory = async(req,res)=>{
+  try{
+   const data = await Category.find({owner: id}).lean()
+   const result = await mypromise(data)
+   return res.status(200).json({
+       success: true,
+       message: "All Category",
+       data: result
+   })
+  }catch(erro){
+    // next(erro.message)
+    return res.status(500).json({
+      success: false,
+      message: "Server Error: Unable to fetch categories",
+      error: erro.message
     });
-  });
-} 
+  }
+}
 
 
 
